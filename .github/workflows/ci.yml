@@ -109,7 +109,7 @@ jobs:
         run: sudo -u builder env HOME=/home/builder CARGO_INCREMENTAL=0 cargo test --release --locked --manifest-path oplus-connect-daemon/Cargo.toml
 
       - name: Save test artifacts
-        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && steps.cargo-test.outputs.cache-hit != 'true'
+        if: github.event_name == 'push' && steps.cargo-test.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: |
@@ -212,7 +212,7 @@ jobs:
             makepkg --nodeps --noextract --nocheck --noconfirm --nosign
 
       - name: Save Cargo downloads
-        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && steps.cargo-downloads.outputs.cache-hit != 'true'
+        if: github.event_name == 'push' && steps.cargo-downloads.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: |
@@ -221,7 +221,7 @@ jobs:
           key: ${{ steps.cargo-downloads.outputs.cache-primary-key }}
 
       - name: Save compiled artifacts
-        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) && steps.cargo-build.outputs.cache-hit != 'true'
+        if: github.event_name == 'push' && steps.cargo-build.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: src/target
