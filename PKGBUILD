@@ -15,6 +15,7 @@ depends=(
   'gst-plugin-va' 'gst-plugin-pipewire' 'libnice' 'xdg-desktop-portal' 'iproute2'
 )
 makedepends=('git' 'cargo' 'pkgconf')
+install="$pkgname.install"
 optdepends=(
   'gst-plugins-ugly: software H.264 encoder for tablet screen sharing'
   'libva-driver: GPU-specific VA-API driver'

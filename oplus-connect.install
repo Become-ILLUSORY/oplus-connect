@@ -1,0 +1,39 @@
+_oplus_connect_firewall_hint() {
+  cat <<'EOF'
+
+==> OPLUS 互联需要放行以下入站端口，否则手机无法发现本机：
+
+    UDP 10150, 10151        设备发现（SDP QUERY/ANNOUNCE）
+    TCP 10150, 10152, 10155 SCP 控制通道
+    TCP 46888, 46999, 47888, 47999, 48888, 48999  数据通道
+
+    ufw:    sudo ufw allow 10150:10151/udp
+            sudo ufw allow 10150,10152,10155/tcp
+            sudo ufw allow 46888,46999,47888,47999,48888,48999/tcp
+
+    firewalld:
+            sudo firewall-cmd --permanent --add-port=10150-10151/udp
+            sudo firewall-cmd --permanent --add-port=10150/tcp
+            sudo firewall-cmd --permanent --add-port=10152/tcp
+            sudo firewall-cmd --permanent --add-port=10155/tcp
+            sudo firewall-cmd --permanent --add-port=46888/tcp
+            sudo firewall-cmd --permanent --add-port=46999/tcp
+            sudo firewall-cmd --permanent --add-port=47888/tcp
+            sudo firewall-cmd --permanent --add-port=47999/tcp
+            sudo firewall-cmd --permanent --add-port=48888/tcp
+            sudo firewall-cmd --permanent --add-port=48999/tcp
+            sudo firewall-cmd --reload
+
+    提示：手机与电脑需处于同一局域网，且路由器未启用 AP 隔离。
+          部分手机热点不转发组播，此实现使用单播回连，通常不受影响。
+
+EOF
+}
+
+post_install() {
+  _oplus_connect_firewall_hint
+}
+
+post_upgrade() {
+  _oplus_connect_firewall_hint
+}
